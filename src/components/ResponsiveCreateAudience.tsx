@@ -15,6 +15,7 @@ import {
   AlertCircle,
   Smartphone,
   Monitor,
+  Download,
 } from "lucide-react";
 import { FileUpload } from "@/components/FileUpload";
 import { FormatGuidelinesDialog } from "@/components/FormatGuidelinesDialog";
