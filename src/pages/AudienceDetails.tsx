@@ -229,10 +229,18 @@ const AudienceDetails = () => {
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={400}>
-                  <LineChart data={performanceData}>
+                  <LineChart
+                    data={performanceData}
+                    margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                  >
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" />
-                    <YAxis />
+                    <XAxis
+                      dataKey="date"
+                      axisLine={true}
+                      tickLine={true}
+                      tick={true}
+                    />
+                    <YAxis axisLine={true} tickLine={true} tick={true} />
                     <Tooltip />
                     <Line
                       type="monotone"
@@ -259,10 +267,18 @@ const AudienceDetails = () => {
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={300}>
-                  <BarChart data={performanceData}>
+                  <BarChart
+                    data={performanceData}
+                    margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                  >
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" />
-                    <YAxis />
+                    <XAxis
+                      dataKey="date"
+                      axisLine={true}
+                      tickLine={true}
+                      tick={true}
+                    />
+                    <YAxis axisLine={true} tickLine={true} tick={true} />
                     <Tooltip />
                     <Bar dataKey="conversions" fill="#00997B" />
                   </BarChart>
