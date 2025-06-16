@@ -6,6 +6,7 @@ import { DashboardSkeleton, EmptyState } from "@/components/LoadingStates";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { ResponsiveDashboard } from "@/components/ResponsiveDashboard";
 import { AudienceComparison } from "@/components/AudienceComparison";
+import { NotificationSystem } from "@/components/NotificationSystem";
 import { useToast } from "@/hooks/use-toast";
 import { exportAudienceData } from "@/utils/exportUtils";
 import { RefreshCw, BarChart3 } from "lucide-react";
@@ -18,8 +19,16 @@ const Index = () => {
   }>({ open: false });
   const [showComparison, setShowComparison] = useState(false);
   const navigate = useNavigate();
-  const { audiences, loading, error, stats, deleteAudience, refetch } =
-    useAudiences();
+  const {
+    audiences,
+    loading,
+    error,
+    stats,
+    deleteAudience,
+    refetch,
+    isConnected,
+    lastUpdate,
+  } = useAudiences();
   const { toast } = useToast();
 
   const handleDelete = async (id: number) => {
@@ -130,6 +139,12 @@ const Index = () => {
         onConfirm={() =>
           deleteDialog.audienceId && handleDelete(deleteDialog.audienceId)
         }
+      />
+
+      <NotificationSystem
+        isConnected={isConnected}
+        lastUpdate={lastUpdate}
+        processingCount={stats.processing}
       />
     </>
   );
