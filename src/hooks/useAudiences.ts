@@ -64,26 +64,18 @@ const mockAudiences: Audience[] = [
 ];
 
 export const useAudiences = () => {
-  const [audiences, setAudiences] = useState<Audience[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [audiences, setAudiences] = useState<Audience[]>(mockAudiences);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isConnected, setIsConnected] = useState(true);
+  const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
 
-  // Simulate API call
+  // Simple initialization - no complex loading
   useEffect(() => {
-    const fetchAudiences = async () => {
-      try {
-        setLoading(true);
-        // Simulate network delay
-        await new Promise((resolve) => setTimeout(resolve, 1500));
-        setAudiences(mockAudiences);
-      } catch (err) {
-        setError("Failed to load audiences");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchAudiences();
+    // Ensure data is available immediately
+    if (audiences.length === 0) {
+      setAudiences(mockAudiences);
+    }
   }, []);
 
   const deleteAudience = async (id: number) => {
@@ -112,14 +104,27 @@ export const useAudiences = () => {
     [],
   );
 
-  // Real-time updates
-  const { isConnected, lastUpdate, forceUpdate } = useRealTimeUpdates(
-    audiences,
-    updateAudience,
-  );
+  // Simple real-time simulation without complex hooks
+  useEffect(() => {
+    const interval = setInterval(() => {
+      // Randomly update audience reach
+      if (Math.random() > 0.8) {
+        const randomAudience =
+          audiences[Math.floor(Math.random() * audiences.length)];
+        if (randomAudience) {
+          updateAudience({
+            id: randomAudience.id,
+            reach:
+              (randomAudience.reach || 1000000) +
+              Math.floor(Math.random() * 5000),
+          });
+          setLastUpdate(new Date());
+        }
+      }
+    }, 15000); // Update every 15 seconds
 
-  // Processing simulation
-  useProcessingSimulation(audiences, updateAudienceStatus);
+    return () => clearInterval(interval);
+  }, [audiences, updateAudience]);
 
   // Calculate stats
   const stats = {
@@ -131,6 +136,19 @@ export const useAudiences = () => {
     active: audiences.filter((a) => a.status === "active").length,
     total: audiences.length,
   };
+
+  const forceUpdate = useCallback(() => {
+    const randomAudience =
+      audiences[Math.floor(Math.random() * audiences.length)];
+    if (randomAudience) {
+      updateAudience({
+        id: randomAudience.id,
+        reach:
+          (randomAudience.reach || 1000000) + Math.floor(Math.random() * 10000),
+      });
+      setLastUpdate(new Date());
+    }
+  }, [audiences, updateAudience]);
 
   return {
     audiences,
@@ -144,11 +162,7 @@ export const useAudiences = () => {
     lastUpdate,
     forceUpdate,
     refetch: () => {
-      setLoading(true);
-      setTimeout(() => {
-        setAudiences([...mockAudiences]);
-        setLoading(false);
-      }, 1000);
+      setAudiences([...mockAudiences]);
     },
   };
 };
