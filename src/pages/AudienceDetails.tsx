@@ -106,15 +106,17 @@ const AudienceDetails = () => {
     >
       <div className="max-w-7xl mx-auto px-6 py-8">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-4">
-            <Button
-              variant="ghost"
-              onClick={() => navigate("/")}
-              className="p-2"
-            >
-              <ArrowLeft className="w-5 h-5" />
-            </Button>
+        <div className="mb-8">
+          <Button
+            variant="ghost"
+            onClick={() => navigate("/")}
+            className="flex items-center gap-2 mb-4"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back
+          </Button>
+
+          <div className="flex items-center justify-between">
             <div>
               <div className="flex items-center gap-3 mb-2">
                 <h1>{audience.name}</h1>
@@ -135,16 +137,16 @@ const AudienceDetails = () => {
                 Created on {audience.created} • {audience.source}
               </p>
             </div>
-          </div>
-          <div className="flex gap-3">
-            <Button variant="outline" className="flex items-center gap-2">
-              <Download className="w-4 h-4" />
-              Export Data
-            </Button>
-            <Button className="bg-brand-primary hover:bg-brand-600 text-white flex items-center gap-2">
-              <Edit2 className="w-4 h-4" />
-              Edit Audience
-            </Button>
+            <div className="flex gap-3">
+              <Button variant="outline" className="flex items-center gap-2">
+                <Download className="w-4 h-4" />
+                Export Data
+              </Button>
+              <Button className="bg-brand-primary hover:bg-brand-600 text-white flex items-center gap-2">
+                <Edit2 className="w-4 h-4" />
+                Edit Audience
+              </Button>
+            </div>
           </div>
         </div>
 
