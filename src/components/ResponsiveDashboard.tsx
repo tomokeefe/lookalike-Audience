@@ -28,6 +28,7 @@ import {
   Edit2,
   Trash2,
   Plus,
+  BarChart3,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Audience } from "@/hooks/useAudiences";
