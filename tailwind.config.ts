@@ -18,7 +18,23 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ["Open Sans", "system-ui", "sans-serif"],
+      },
       colors: {
+        brand: {
+          primary: "#01BA4E",
+          50: "#F0FDF4",
+          100: "#DCFCE7",
+          200: "#BBF7D0",
+          300: "#86EFAC",
+          400: "#4ADE80",
+          500: "#01BA4E",
+          600: "#16A34A",
+          700: "#15803D",
+          800: "#166534",
+          900: "#14532D",
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
