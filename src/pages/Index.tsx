@@ -115,18 +115,8 @@ const Index = () => {
           })
         }
         onCreateAudience={() => navigate("/create-audience")}
+        onCompareAudiences={() => setShowComparison(true)}
       />
-
-      {/* Floating Action Button for Comparison */}
-      <div className="fixed bottom-6 right-6 z-50">
-        <Button
-          onClick={() => setShowComparison(true)}
-          className="bg-brand-primary hover:bg-brand-600 text-white rounded-full w-14 h-14 shadow-lg"
-          title="Compare Audiences"
-        >
-          <BarChart3 className="w-6 h-6" />
-        </Button>
-      </div>
 
       <ConfirmDialog
         open={deleteDialog.open}

@@ -42,6 +42,7 @@ interface ResponsiveDashboardProps {
   };
   onDeleteAudience: (id: number) => void;
   onCreateAudience: () => void;
+  onCompareAudiences: () => void;
 }
 
 export const ResponsiveDashboard = ({
@@ -49,6 +50,7 @@ export const ResponsiveDashboard = ({
   stats,
   onDeleteAudience,
   onCreateAudience,
+  onCompareAudiences,
 }: ResponsiveDashboardProps) => {
   const [selectedFilter, setSelectedFilter] = useState<string>("all");
   const navigate = useNavigate();
@@ -166,14 +168,25 @@ export const ResponsiveDashboard = ({
                 </div>
               </SheetContent>
             </Sheet>
-            <Button
-              size="sm"
-              onClick={onCreateAudience}
-              className="bg-brand-primary hover:bg-brand-600 text-white"
-            >
-              <Plus className="h-4 w-4 mr-1" />
-              Create
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={onCompareAudiences}
+                className="flex items-center gap-1"
+              >
+                <BarChart3 className="h-4 w-4" />
+                Compare
+              </Button>
+              <Button
+                size="sm"
+                onClick={onCreateAudience}
+                className="bg-brand-primary hover:bg-brand-600 text-white"
+              >
+                <Plus className="h-4 w-4 mr-1" />
+                Create
+              </Button>
+            </div>
           </div>
         </div>
       </div>
@@ -187,12 +200,22 @@ export const ResponsiveDashboard = ({
               Manage your lookalike audiences and track their performance
             </p>
           </div>
-          <Button
-            className="bg-brand-primary hover:bg-brand-600 text-white px-6 py-2 rounded-lg font-medium"
-            onClick={onCreateAudience}
-          >
-            Create New Audience
-          </Button>
+          <div className="flex gap-3">
+            <Button
+              variant="outline"
+              onClick={onCompareAudiences}
+              className="flex items-center gap-2"
+            >
+              <BarChart3 className="w-4 h-4" />
+              Compare Audiences
+            </Button>
+            <Button
+              className="bg-brand-primary hover:bg-brand-600 text-white px-6 py-2 rounded-lg font-medium"
+              onClick={onCreateAudience}
+            >
+              Create New Audience
+            </Button>
+          </div>
         </div>
 
         {/* Stats Grid - Responsive */}
