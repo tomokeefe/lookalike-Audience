@@ -82,6 +82,38 @@ export const useAudiences = () => {
     setAudiences((prev) => prev.filter((audience) => audience.id !== id));
   };
 
+  const createAudience = async (audienceData: {
+    name: string;
+    source: string;
+    uploadedFile: File | null;
+  }) => {
+    const newAudience: Audience = {
+      id: Date.now(), // Simple ID generation
+      name: audienceData.name,
+      source: audienceData.source,
+      size: "5%", // Default size
+      created: new Date().toLocaleDateString(),
+      status: "processing",
+      reach: 0,
+    };
+
+    setAudiences((prev) => [newAudience, ...prev]);
+
+    // Simulate processing completion after 3-5 seconds
+    setTimeout(
+      () => {
+        updateAudienceStatus(newAudience.id, "active");
+        updateAudience({
+          id: newAudience.id,
+          reach: Math.floor(Math.random() * 2000000) + 1000000, // Random reach between 1M-3M
+        });
+      },
+      3000 + Math.random() * 2000,
+    );
+
+    return newAudience;
+  };
+
   const updateAudienceStatus = useCallback(
     async (id: number, status: Audience["status"]) => {
       setAudiences((prev) =>
@@ -156,6 +188,7 @@ export const useAudiences = () => {
     error,
     stats,
     deleteAudience,
+    createAudience,
     updateAudienceStatus,
     updateAudience,
     isConnected,

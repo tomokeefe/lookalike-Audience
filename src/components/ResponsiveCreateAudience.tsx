@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { FileUpload } from "@/components/FileUpload";
 import { FormatGuidelinesDialog } from "@/components/FormatGuidelinesDialog";
+import { useAudienceContext } from "@/contexts/AudienceContext";
 import { useToast } from "@/hooks/use-toast";
 
 type Step = 1 | 2 | 3 | 4;
@@ -35,7 +36,9 @@ export const ResponsiveCreateAudience = ({
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [isCreating, setIsCreating] = useState(false);
   const [formErrors, setFormErrors] = useState<string[]>([]);
+  const [createdAudience, setCreatedAudience] = useState<any>(null);
   const navigate = useNavigate();
+  const { createAudience } = useAudienceContext();
   const { toast } = useToast();
 
   const validateStep = (step: Step): boolean => {
@@ -83,11 +86,22 @@ export const ResponsiveCreateAudience = ({
 
     setIsCreating(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      // Actually create the audience
+      const newAudience = await createAudience({
+        name: audienceName,
+        source:
+          sourceType === "customer-list"
+            ? "Customer List"
+            : "Lookalike Audience",
+        uploadedFile,
+      });
+
+      setCreatedAudience(newAudience);
 
       toast({
         title: "Audience created successfully!",
-        description: "Your lookalike audience is now being processed.",
+        description:
+          "Your lookalike audience is now being processed and will appear in your dashboard.",
       });
 
       setCurrentStep(4);
@@ -523,19 +537,26 @@ export const ResponsiveCreateAudience = ({
                     <div className="flex justify-between text-sm lg:text-base">
                       <span className="text-gray-600">Audience Name</span>
                       <span className="font-medium text-gray-900">
-                        {audienceName || "testing"}
+                        {createdAudience?.name || audienceName || "testing"}
                       </span>
                     </div>
                     <div className="flex justify-between text-sm lg:text-base">
-                      <span className="text-gray-600">Audience Size</span>
+                      <span className="text-gray-600">Source</span>
                       <span className="font-medium text-gray-900">
-                        2.8 million people
+                        {createdAudience?.source || "Customer List"}
+                      </span>
+                    </div>
+                    <div className="flex justify-between text-sm lg:text-base">
+                      <span className="text-gray-600">Created</span>
+                      <span className="font-medium text-gray-900">
+                        {createdAudience?.created ||
+                          new Date().toLocaleDateString()}
                       </span>
                     </div>
                     <div className="flex justify-between text-sm lg:text-base">
                       <span className="text-gray-600">Status</span>
                       <span className="inline-flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-orange-500"></div>
+                        <div className="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></div>
                         <span className="font-medium text-gray-900">
                           Processing
                         </span>

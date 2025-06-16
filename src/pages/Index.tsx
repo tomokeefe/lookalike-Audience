@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { useAudiences } from "@/hooks/useAudiences";
+import { useAudienceContext } from "@/contexts/AudienceContext";
 import { DashboardSkeleton, EmptyState } from "@/components/LoadingStates";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { ResponsiveDashboard } from "@/components/ResponsiveDashboard";
@@ -28,7 +28,7 @@ const Index = () => {
     refetch,
     isConnected,
     lastUpdate,
-  } = useAudiences();
+  } = useAudienceContext();
   const { toast } = useToast();
 
   const handleDelete = async (id: number) => {
