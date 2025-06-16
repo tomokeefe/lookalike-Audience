@@ -1,8 +1,8 @@
 import { ResponsiveCreateAudience } from "@/components/ResponsiveCreateAudience";
-import { useMobile } from "@/hooks/use-mobile";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const CreateAudience = () => {
-  const isMobile = useMobile();
+  const isMobile = useIsMobile();
 
   return <ResponsiveCreateAudience isMobile={isMobile} />;
 };
