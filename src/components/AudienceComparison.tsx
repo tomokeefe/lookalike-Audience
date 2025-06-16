@@ -31,7 +31,7 @@ import {
   Activity,
   Calendar,
   Download,
-  X,
+  ArrowLeft,
 } from "lucide-react";
 import { Audience } from "@/hooks/useAudiences";
 
@@ -116,15 +116,23 @@ export const AudienceComparison = ({
       <div className="max-w-7xl mx-auto px-4 lg:px-6 py-4 lg:py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="mb-2">Audience Comparison</h1>
-            <p className="text-gray-600">
-              Compare performance metrics between two audiences
-            </p>
+          <div className="flex items-center gap-4">
+            <Button
+              variant="ghost"
+              onClick={onClose}
+              size="sm"
+              className="flex items-center gap-2"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back
+            </Button>
+            <div>
+              <h1 className="mb-2">Audience Comparison</h1>
+              <p className="text-gray-600">
+                Compare performance metrics between two audiences
+              </p>
+            </div>
           </div>
-          <Button variant="ghost" onClick={onClose} size="sm">
-            <X className="w-4 h-4" />
-          </Button>
         </div>
 
         {/* Audience Selection */}
