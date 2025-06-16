@@ -75,7 +75,10 @@ const Index = () => {
   );
 
   return (
-    <div className="min-h-screen bg-white font-sans">
+    <div
+      className="min-h-screen font-sans"
+      style={{ backgroundColor: "#F8FBF7" }}
+    >
       <div className="max-w-7xl mx-auto px-6 py-8">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
