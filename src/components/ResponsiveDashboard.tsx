@@ -220,7 +220,7 @@ export const ResponsiveDashboard = ({
         </div>
 
         {/* Stats Grid - Responsive */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-6 mb-6 lg:mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-6 mb-6 lg:mb-8">
           <Card className="border border-gray-200 shadow-sm">
             <CardContent className="p-3 lg:p-6">
               <div className="flex items-center gap-2 lg:gap-3 mb-2">
@@ -275,26 +275,6 @@ export const ResponsiveDashboard = ({
               <div className="text-xs lg:text-sm text-gray-500">
                 Ready to use
               </div>
-            </CardContent>
-          </Card>
-
-          <Card className="border border-gray-200 shadow-sm">
-            <CardContent className="p-3 lg:p-6">
-              <div className="flex items-center gap-2 lg:gap-3 mb-2">
-                <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-lg bg-purple-50 flex items-center justify-center">
-                  <Download className="w-4 h-4 lg:w-5 lg:h-5 text-purple-600" />
-                </div>
-                <span className="text-gray-600 font-medium text-xs lg:text-sm">
-                  Export
-                </span>
-              </div>
-              <Button
-                variant="outline"
-                size="sm"
-                className="text-xs lg:text-sm mt-1"
-              >
-                Download Report
-              </Button>
             </CardContent>
           </Card>
         </div>
