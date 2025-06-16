@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
   Table,
@@ -21,58 +21,78 @@ import {
   Eye,
   Edit2,
   Trash2,
+  RefreshCw,
 } from "lucide-react";
-
-const audienceData = [
-  {
-    id: 1,
-    name: "test",
-    source: "Customer List",
-    size: "5%",
-    created: "Jun 16, 2025",
-    status: "active",
-  },
-  {
-    id: 2,
-    name: "This is test",
-    source: "Customer List",
-    size: "5%",
-    created: "Jun 16, 2025",
-    status: "active",
-  },
-  {
-    id: 3,
-    name: "Loyal Customers Lookalike",
-    source: "Customer List",
-    size: "7%",
-    created: "May 25, 2025",
-    status: "active",
-  },
-  {
-    id: 4,
-    name: "High Value Customers Lookalike (click to view analytics)",
-    source: "Customer List",
-    size: "5%",
-    created: "May 20, 2025",
-    status: "processing",
-  },
-  {
-    id: 5,
-    name: "New Customer Lookalike (click to view analytics)",
-    source: "Customer List",
-    size: "3%",
-    created: "May 15, 2025",
-    status: "processing",
-  },
-];
+import { useAudiences } from "@/hooks/useAudiences";
+import { DashboardSkeleton, EmptyState } from "@/components/LoadingStates";
+import { ConfirmDialog } from "@/components/ConfirmDialog";
+import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [deleteDialog, setDeleteDialog] = useState<{
+    open: boolean;
+    audienceId?: number;
+    audienceName?: string;
+  }>({ open: false });
   const navigate = useNavigate();
+  const { audiences, loading, error, stats, deleteAudience, refetch } =
+    useAudiences();
+  const { toast } = useToast();
 
-  const filteredAudiences = audienceData.filter((audience) =>
+  const filteredAudiences = audiences.filter((audience) =>
     audience.name.toLowerCase().includes(searchTerm.toLowerCase()),
   );
+
+  const handleDelete = async (id: number) => {
+    try {
+      await deleteAudience(id);
+      toast({
+        title: "Audience deleted",
+        description: "The audience has been successfully deleted.",
+      });
+      setDeleteDialog({ open: false });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to delete audience. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const formatNumber = (num: number) => {
+    return new Intl.NumberFormat().format(num);
+  };
+
+  if (loading) {
+    return <DashboardSkeleton />;
+  }
+
+  if (error) {
+    return (
+      <div
+        className="min-h-screen font-sans"
+        style={{ backgroundColor: "#F8FBF7" }}
+      >
+        <div className="max-w-7xl mx-auto px-6 py-8">
+          <EmptyState
+            title="Error loading audiences"
+            description={error}
+            action={
+              <Button
+                onClick={refetch}
+                className="bg-brand-primary hover:bg-brand-600 text-white"
+              >
+                <RefreshCw className="w-4 h-4 mr-2" />
+                Try Again
+              </Button>
+            }
+          />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -104,7 +124,8 @@ const Index = () => {
             Audience Overview
           </h2>
           <p className="text-gray-600 text-sm mb-6">
-            You have 5 audiences in total
+            You have {stats.total} audience{stats.total !== 1 ? "s" : ""} in
+            total
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -117,7 +138,7 @@ const Index = () => {
                   <span className="text-gray-600 font-medium">Total Reach</span>
                 </div>
                 <div className="text-2xl font-bold text-gray-900">
-                  14,485,110
+                  {formatNumber(stats.totalReach)}
                 </div>
                 <div className="text-sm text-gray-500">
                   People across all audiences
@@ -133,7 +154,9 @@ const Index = () => {
                   </div>
                   <span className="text-gray-600 font-medium">Processing</span>
                 </div>
-                <div className="text-2xl font-bold text-gray-900">3</div>
+                <div className="text-2xl font-bold text-gray-900">
+                  {stats.processing}
+                </div>
                 <div className="text-sm text-gray-500">
                   Audiences being created
                 </div>
@@ -148,7 +171,9 @@ const Index = () => {
                   </div>
                   <span className="text-gray-600 font-medium">Active</span>
                 </div>
-                <div className="text-2xl font-bold text-gray-900">2</div>
+                <div className="text-2xl font-bold text-gray-900">
+                  {stats.active}
+                </div>
                 <div className="text-sm text-gray-500">
                   Ready to use audiences
                 </div>
@@ -201,14 +226,27 @@ const Index = () => {
               {filteredAudiences.map((audience) => (
                 <TableRow
                   key={audience.id}
-                  className="border-b border-gray-100"
+                  className="border-b border-gray-100 hover:bg-gray-50"
                 >
                   <TableCell>
                     <div className="flex items-center gap-3">
-                      <div className="w-2 h-2 rounded-full bg-brand-primary"></div>
+                      <div
+                        className={`w-2 h-2 rounded-full ${
+                          audience.status === "active"
+                            ? "bg-brand-primary"
+                            : audience.status === "processing"
+                              ? "bg-orange-500"
+                              : "bg-red-500"
+                        }`}
+                      ></div>
                       <span className="font-medium text-gray-900">
                         {audience.name}
                       </span>
+                      {audience.status === "processing" && (
+                        <Badge variant="secondary" className="text-xs">
+                          Processing
+                        </Badge>
+                      )}
                     </div>
                   </TableCell>
                   <TableCell className="text-gray-600">
@@ -226,6 +264,7 @@ const Index = () => {
                         variant="ghost"
                         size="sm"
                         className="p-1 h-8 w-8 text-gray-500 hover:text-gray-700"
+                        title="View details"
                       >
                         <Eye className="w-4 h-4" />
                       </Button>
@@ -233,6 +272,7 @@ const Index = () => {
                         variant="ghost"
                         size="sm"
                         className="p-1 h-8 w-8 text-gray-500 hover:text-gray-700"
+                        title="Edit audience"
                       >
                         <Edit2 className="w-4 h-4" />
                       </Button>
@@ -240,6 +280,14 @@ const Index = () => {
                         variant="ghost"
                         size="sm"
                         className="p-1 h-8 w-8 text-gray-500 hover:text-red-600"
+                        title="Delete audience"
+                        onClick={() =>
+                          setDeleteDialog({
+                            open: true,
+                            audienceId: audience.id,
+                            audienceName: audience.name,
+                          })
+                        }
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>
@@ -250,7 +298,32 @@ const Index = () => {
             </TableBody>
           </Table>
         </div>
+
+        {filteredAudiences.length === 0 && searchTerm && (
+          <EmptyState
+            title="No audiences found"
+            description={`No audiences match "${searchTerm}". Try adjusting your search.`}
+            action={
+              <Button variant="outline" onClick={() => setSearchTerm("")}>
+                Clear search
+              </Button>
+            }
+          />
+        )}
       </div>
+
+      <ConfirmDialog
+        open={deleteDialog.open}
+        onOpenChange={(open) => setDeleteDialog({ open })}
+        title="Delete Audience"
+        description={`Are you sure you want to delete "${deleteDialog.audienceName}"? This action cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        variant="destructive"
+        onConfirm={() =>
+          deleteDialog.audienceId && handleDelete(deleteDialog.audienceId)
+        }
+      />
     </div>
   );
 };
