@@ -176,9 +176,7 @@ const CreateAudience = () => {
         {currentStep === 1 && (
           <div className="max-w-2xl mx-auto">
             <div className="mb-8">
-              <h2 className="text-xl font-semibold text-gray-900 mb-2">
-                Select Your Source Audience
-              </h2>
+              <h2 className="mb-2">Select Your Source Audience</h2>
               <p className="text-gray-600">
                 Choose the source audience that will be used to create your
                 lookalike audience
@@ -269,9 +267,7 @@ const CreateAudience = () => {
         {currentStep === 2 && (
           <div className="max-w-2xl mx-auto">
             <div className="mb-8">
-              <h2 className="text-xl font-semibold text-gray-900 mb-2">
-                Configure Customer List Parameters
-              </h2>
+              <h2 className="mb-2">Configure Customer List Parameters</h2>
               <p className="text-gray-600">
                 Adjust the settings to control the size of your lookalike
                 audience.
@@ -361,9 +357,7 @@ const CreateAudience = () => {
         {currentStep === 3 && (
           <div className="max-w-2xl mx-auto">
             <div className="mb-8">
-              <h2 className="text-xl font-semibold text-gray-900 mb-2">
-                Review & Create
-              </h2>
+              <h2 className="mb-2">Review & Create</h2>
               <p className="text-gray-600">
                 Review your lookalike audience settings before creating it.
               </p>

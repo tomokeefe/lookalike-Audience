@@ -82,9 +82,7 @@ const AudienceDetails = () => {
       >
         <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="text-center py-12">
-            <h2 className="text-xl font-semibold text-gray-900 mb-2">
-              Audience not found
-            </h2>
+            <h2 className="mb-2">Audience not found</h2>
             <p className="text-gray-600 mb-6">
               The audience you're looking for doesn't exist.
             </p>
