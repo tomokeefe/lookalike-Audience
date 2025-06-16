@@ -103,9 +103,7 @@ const Index = () => {
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-2xl font-semibold text-gray-900 mb-2">
-              My Audiences
-            </h1>
+            <h1 className="mb-2">My Audiences</h1>
             <p className="text-gray-600 text-sm">
               Manage your lookalike audiences and track their performance
             </p>
@@ -120,9 +118,7 @@ const Index = () => {
 
         {/* Audience Overview */}
         <div className="mb-8">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">
-            Audience Overview
-          </h2>
+          <h2 className="mb-4">Audience Overview</h2>
           <p className="text-gray-600 text-sm mb-6">
             You have {stats.total} audience{stats.total !== 1 ? "s" : ""} in
             total

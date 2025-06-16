@@ -137,9 +137,7 @@ const CreateAudience = () => {
       <div className="max-w-4xl mx-auto px-6 py-8">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-2xl font-semibold text-gray-900 mb-2">
-            Create Lookalike Audience
-          </h1>
+          <h1 className="mb-2">Create Lookalike Audience</h1>
           <p className="text-gray-600">
             Find new potential customers who are similar to your best customers
           </p>
@@ -502,9 +500,7 @@ const CreateAudience = () => {
               <Check className="w-8 h-8 text-white" />
             </div>
 
-            <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-              Lookalike Audience Created!
-            </h2>
+            <h2 className="mb-4">Lookalike Audience Created!</h2>
             <p className="text-gray-600 mb-8">
               Your new lookalike audience has been successfully created and is
               now processing. You'll be notified when it's ready to use.

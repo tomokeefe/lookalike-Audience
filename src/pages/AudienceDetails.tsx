@@ -119,9 +119,7 @@ const AudienceDetails = () => {
             </Button>
             <div>
               <div className="flex items-center gap-3 mb-2">
-                <h1 className="text-2xl font-semibold text-gray-900">
-                  {audience.name}
-                </h1>
+                <h1>{audience.name}</h1>
                 <Badge
                   variant={
                     audience.status === "active" ? "default" : "secondary"
