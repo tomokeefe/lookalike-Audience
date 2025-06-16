@@ -97,7 +97,10 @@ const CreateAudience = () => {
   );
 
   return (
-    <div className="min-h-screen bg-white font-sans">
+    <div
+      className="min-h-screen font-sans"
+      style={{ backgroundColor: "#F8FBF7" }}
+    >
       <div className="max-w-4xl mx-auto px-6 py-8">
         {/* Header */}
         <div className="text-center mb-12">
