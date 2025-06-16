@@ -1,4 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+import {
+  useRealTimeUpdates,
+  useProcessingSimulation,
+} from "./useRealTimeUpdates";
 
 export interface Audience {
   id: number;
@@ -86,16 +90,36 @@ export const useAudiences = () => {
     setAudiences((prev) => prev.filter((audience) => audience.id !== id));
   };
 
-  const updateAudienceStatus = async (
-    id: number,
-    status: Audience["status"],
-  ) => {
-    setAudiences((prev) =>
-      prev.map((audience) =>
-        audience.id === id ? { ...audience, status } : audience,
-      ),
-    );
-  };
+  const updateAudienceStatus = useCallback(
+    async (id: number, status: Audience["status"]) => {
+      setAudiences((prev) =>
+        prev.map((audience) =>
+          audience.id === id ? { ...audience, status } : audience,
+        ),
+      );
+    },
+    [],
+  );
+
+  const updateAudience = useCallback(
+    (updates: Partial<Audience> & { id: number }) => {
+      setAudiences((prev) =>
+        prev.map((audience) =>
+          audience.id === updates.id ? { ...audience, ...updates } : audience,
+        ),
+      );
+    },
+    [],
+  );
+
+  // Real-time updates
+  const { isConnected, lastUpdate, forceUpdate } = useRealTimeUpdates(
+    audiences,
+    updateAudience,
+  );
+
+  // Processing simulation
+  useProcessingSimulation(audiences, updateAudienceStatus);
 
   // Calculate stats
   const stats = {
@@ -115,6 +139,10 @@ export const useAudiences = () => {
     stats,
     deleteAudience,
     updateAudienceStatus,
+    updateAudience,
+    isConnected,
+    lastUpdate,
+    forceUpdate,
     refetch: () => {
       setLoading(true);
       setTimeout(() => {
