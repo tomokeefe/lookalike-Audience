@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState } from "react";
 import Index from "./pages/Index";
 import CreateAudience from "./pages/CreateAudience";
+import AudienceDetails from "./pages/AudienceDetails";
 import NotFound from "./pages/NotFound";
 
 const App = () => {
@@ -30,6 +31,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/create-audience" element={<CreateAudience />} />
+            <Route path="/audience/:id" element={<AudienceDetails />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

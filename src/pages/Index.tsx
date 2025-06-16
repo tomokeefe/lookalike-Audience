@@ -265,6 +265,7 @@ const Index = () => {
                         size="sm"
                         className="p-1 h-8 w-8 text-gray-500 hover:text-gray-700"
                         title="View details"
+                        onClick={() => navigate(`/audience/${audience.id}`)}
                       >
                         <Eye className="w-4 h-4" />
                       </Button>

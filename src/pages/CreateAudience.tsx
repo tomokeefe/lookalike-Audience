@@ -5,18 +5,18 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
   ArrowLeft,
   Check,
-  Upload,
   Users,
   UserCheck,
   File,
-  Download,
   HelpCircle,
-  X,
+  AlertCircle,
 } from "lucide-react";
+import { FileUpload } from "@/components/FileUpload";
+import { useToast } from "@/hooks/use-toast";
 
 type Step = 1 | 2 | 3 | 4;
 
@@ -27,42 +27,75 @@ const CreateAudience = () => {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [audienceSize, setAudienceSize] = useState(5);
   const [isCreated, setIsCreated] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
+  const [formErrors, setFormErrors] = useState<string[]>([]);
   const navigate = useNavigate();
+  const { toast } = useToast();
 
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setUploadedFile(file);
+  const validateStep = (step: Step): boolean => {
+    const errors: string[] = [];
+
+    switch (step) {
+      case 1:
+        if (!sourceType) {
+          errors.push("Please select a source type");
+        }
+        break;
+      case 2:
+        if (!audienceName.trim()) {
+          errors.push("Audience name is required");
+        }
+        if (audienceName.length > 100) {
+          errors.push("Audience name must be less than 100 characters");
+        }
+        if (!uploadedFile) {
+          errors.push("Please upload a CSV file");
+        }
+        break;
     }
-  };
 
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-  };
-
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    const file = e.dataTransfer.files[0];
-    if (file) {
-      setUploadedFile(file);
-    }
+    setFormErrors(errors);
+    return errors.length === 0;
   };
 
   const handleNext = () => {
-    if (currentStep < 4) {
+    if (validateStep(currentStep) && currentStep < 4) {
       setCurrentStep((prev) => (prev + 1) as Step);
+      setFormErrors([]);
     }
   };
 
   const handleBack = () => {
     if (currentStep > 1) {
       setCurrentStep((prev) => (prev - 1) as Step);
+      setFormErrors([]);
     }
   };
 
-  const handleCreate = () => {
-    setIsCreated(true);
-    setCurrentStep(4);
+  const handleCreate = async () => {
+    if (!validateStep(3)) return;
+
+    setIsCreating(true);
+    try {
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
+      toast({
+        title: "Audience created successfully!",
+        description: "Your lookalike audience is now being processed.",
+      });
+
+      setIsCreated(true);
+      setCurrentStep(4);
+    } catch (error) {
+      toast({
+        title: "Error creating audience",
+        description: "Please try again or contact support.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsCreating(false);
+    }
   };
 
   const StepIndicator = ({
@@ -248,18 +281,6 @@ const CreateAudience = () => {
             </div>
 
             <div className="space-y-8">
-              {/* Action Buttons */}
-              <div className="flex gap-4">
-                <Button variant="outline" className="flex items-center gap-2">
-                  <Download className="w-4 h-4" />
-                  Download Template
-                </Button>
-                <Button variant="outline" className="flex items-center gap-2">
-                  <HelpCircle className="w-4 h-4" />
-                  See Format Guidelines
-                </Button>
-              </div>
-
               {/* Name Your Audience */}
               <div>
                 <Label
@@ -274,11 +295,15 @@ const CreateAudience = () => {
                   onChange={(e) => setAudienceName(e.target.value)}
                   placeholder="Customer List Lookalike (Jun 16, 2025)"
                   className="w-full"
+                  maxLength={100}
                 />
-                <p className="text-sm text-gray-500 mt-2">
-                  Choose a descriptive name to help you identify this audience
-                  later
-                </p>
+                <div className="flex justify-between text-sm text-gray-500 mt-2">
+                  <span>
+                    Choose a descriptive name to help you identify this audience
+                    later
+                  </span>
+                  <span>{audienceName.length}/100</span>
+                </div>
               </div>
 
               {/* Upload Customer Data */}
@@ -291,67 +316,27 @@ const CreateAudience = () => {
                   used to create your lookalike audience.
                 </p>
 
-                {uploadedFile ? (
-                  <Card className="border-2 border-brand-primary bg-green-50">
-                    <CardContent className="p-6">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-lg bg-brand-primary flex items-center justify-center">
-                            <File className="w-5 h-5 text-white" />
-                          </div>
-                          <div>
-                            <div className="font-medium text-gray-900">
-                              {uploadedFile.name}
-                            </div>
-                            <div className="text-sm text-gray-600">
-                              {(uploadedFile.size / 1024).toFixed(2)} KB •
-                              Uploaded {new Date().toLocaleDateString()}
-                            </div>
-                          </div>
-                        </div>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => setUploadedFile(null)}
-                          className="text-gray-500 hover:text-red-600"
-                        >
-                          <X className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ) : (
-                  <div
-                    onDragOver={handleDragOver}
-                    onDrop={handleDrop}
-                    className="border-2 border-dashed border-gray-300 rounded-lg p-12 text-center hover:border-brand-primary transition-colors"
-                  >
-                    <Upload className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                    <div className="text-lg font-medium text-gray-900 mb-2">
-                      Drag and drop your CSV file here
-                    </div>
-                    <div className="text-gray-600 mb-4">
-                      or browse to upload
-                    </div>
-                    <input
-                      type="file"
-                      accept=".csv"
-                      onChange={handleFileUpload}
-                      className="hidden"
-                      id="file-upload"
-                    />
-                    <Label
-                      htmlFor="file-upload"
-                      className="inline-flex items-center px-4 py-2 bg-brand-primary text-white rounded-lg hover:bg-brand-600 cursor-pointer"
-                    >
-                      Browse Files
-                    </Label>
-                    <div className="text-sm text-gray-500 mt-4">
-                      CSV files containing customer data (max 10MB)
-                    </div>
-                  </div>
-                )}
+                <FileUpload
+                  onFileUpload={setUploadedFile}
+                  uploadedFile={uploadedFile}
+                  onFileRemove={() => setUploadedFile(null)}
+                  templateType="customer-list"
+                />
               </div>
+
+              {/* Form Errors */}
+              {formErrors.length > 0 && (
+                <Alert variant="destructive">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertDescription>
+                    <div className="space-y-1">
+                      {formErrors.map((error, index) => (
+                        <div key={index}>• {error}</div>
+                      ))}
+                    </div>
+                  </AlertDescription>
+                </Alert>
+              )}
             </div>
 
             <div className="flex justify-between mt-8">
@@ -494,9 +479,17 @@ const CreateAudience = () => {
               </Button>
               <Button
                 onClick={handleCreate}
+                disabled={isCreating}
                 className="bg-brand-primary hover:bg-brand-600 text-white px-8 py-2"
               >
-                Create Lookalike Audience
+                {isCreating ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                    Creating Audience...
+                  </>
+                ) : (
+                  "Create Lookalike Audience"
+                )}
               </Button>
             </div>
           </div>
