@@ -84,7 +84,9 @@ const Index = () => {
         <div className="flex justify-between items-center mb-8">
           <div>
             <h1 className="text-2xl font-semibold text-gray-900 mb-2">
-              My Audiences
+              <h1>
+                <span>My Audiences</span>
+              </h1>
             </h1>
             <p className="text-gray-600 text-sm">
               Manage your lookalike audiences and track their performance
