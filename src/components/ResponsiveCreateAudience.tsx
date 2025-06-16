@@ -17,6 +17,7 @@ import {
   Monitor,
 } from "lucide-react";
 import { FileUpload } from "@/components/FileUpload";
+import { FormatGuidelinesDialog } from "@/components/FormatGuidelinesDialog";
 import { useToast } from "@/hooks/use-toast";
 
 type Step = 1 | 2 | 3 | 4;
@@ -351,11 +352,15 @@ export const ResponsiveCreateAudience = ({
 
               {/* Upload Customer Data */}
               <div>
-                <Label className="text-base font-semibold text-gray-900 mb-3 block">
-                  Upload Customer Data
-                </Label>
+                <div className="flex items-center justify-between mb-3">
+                  <Label className="text-base font-semibold text-gray-900">
+                    Upload Customer Data
+                  </Label>
+                  <FormatGuidelinesDialog />
+                </div>
                 <p className="text-sm text-gray-600 mb-4">
-                  Upload a CSV file containing your customer data.
+                  Upload a CSV file containing your customer data. Make sure it
+                  follows our format guidelines.
                 </p>
 
                 <FileUpload
