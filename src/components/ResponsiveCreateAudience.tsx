@@ -18,6 +18,8 @@ import {
 } from "lucide-react";
 import { FileUpload } from "@/components/FileUpload";
 import { FormatGuidelinesDialog } from "@/components/FormatGuidelinesDialog";
+import { CustomerListSelect } from "@/components/CustomerListSelect";
+import { AudienceSizeSlider } from "@/components/AudienceSizeSlider";
 import { useAudienceContext } from "@/contexts/AudienceContext";
 import { useToast } from "@/hooks/use-toast";
 
@@ -34,6 +36,8 @@ export const ResponsiveCreateAudience = ({
   const [sourceType, setSourceType] = useState("customer-list");
   const [audienceName, setAudienceName] = useState("");
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [selectedCustomerList, setSelectedCustomerList] = useState("");
+  const [audienceSize, setAudienceSize] = useState(5);
   const [isCreating, setIsCreating] = useState(false);
   const [formErrors, setFormErrors] = useState<string[]>([]);
   const [createdAudience, setCreatedAudience] = useState<any>(null);
@@ -57,8 +61,11 @@ export const ResponsiveCreateAudience = ({
         if (audienceName.length > 100) {
           errors.push("Audience name must be less than 100 characters");
         }
-        if (!uploadedFile) {
+        if (sourceType === "customer-list" && !uploadedFile) {
           errors.push("Please upload a CSV file");
+        }
+        if (sourceType === "lookalike-audience" && !selectedCustomerList) {
+          errors.push("Please select a source customer list");
         }
         break;
     }
@@ -166,7 +173,11 @@ export const ResponsiveCreateAudience = ({
             <ArrowLeft className="w-5 h-5" />
           </Button>
           <div className="flex-1">
-            <h1 className="text-lg font-semibold">Create Audience</h1>
+            <h1 className="text-lg font-semibold">
+              {sourceType === "lookalike-audience"
+                ? "Create Lookalike Audience"
+                : "Create Audience"}
+            </h1>
             <div className="text-xs text-gray-500">Step {currentStep} of 3</div>
           </div>
         </div>
@@ -180,7 +191,11 @@ export const ResponsiveCreateAudience = ({
       <div className="max-w-4xl mx-auto px-4 lg:px-6 py-4 lg:py-8">
         {/* Desktop Header */}
         <div className="hidden lg:block text-center mb-12">
-          <h1 className="mb-2">Create Customer List</h1>
+          <h1 className="mb-2">
+            {sourceType === "lookalike-audience"
+              ? "Create Lookalike Audience"
+              : "Create Customer List"}
+          </h1>
           <p className="text-gray-600">
             Find new potential customers who are similar to your best customers
           </p>
@@ -327,10 +342,14 @@ export const ResponsiveCreateAudience = ({
             <div className="space-y-6 lg:space-y-8">
               <div className="mb-6 lg:mb-8 lg:hidden">
                 <h2 className="text-xl font-semibold text-gray-900 mb-2">
-                  Setup Your Audience
+                  {sourceType === "lookalike-audience"
+                    ? "Configure Parameters"
+                    : "Setup Your Audience"}
                 </h2>
                 <p className="text-gray-600 text-sm">
-                  Configure the details and upload your data
+                  {sourceType === "lookalike-audience"
+                    ? "Configure the settings for your lookalike audience"
+                    : "Configure the details and upload your data"}
                 </p>
               </div>
 
@@ -341,6 +360,36 @@ export const ResponsiveCreateAudience = ({
                   audience.
                 </p>
               </div>
+
+              {/* Download Template and Format Guidelines - Only for Lookalike Audience */}
+              {sourceType === "lookalike-audience" && (
+                <div className="flex flex-col sm:flex-row gap-3 mb-6">
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      /* Download template logic */
+                    }}
+                    className="flex items-center gap-2"
+                  >
+                    <Download className="w-4 h-4" />
+                    Download Template
+                  </Button>
+                  <FormatGuidelinesDialog />
+                </div>
+              )}
+
+              {/* Select Source Customer List - Only for Lookalike Audience */}
+              {sourceType === "lookalike-audience" && (
+                <div>
+                  <Label className="text-base font-semibold text-gray-900 mb-3 block">
+                    Select Source Customer List
+                  </Label>
+                  <CustomerListSelect
+                    value={selectedCustomerList}
+                    onValueChange={setSelectedCustomerList}
+                  />
+                </div>
+              )}
 
               {/* Name Your Audience */}
               <div>
@@ -354,33 +403,50 @@ export const ResponsiveCreateAudience = ({
                   id="audience-name"
                   value={audienceName}
                   onChange={(e) => setAudienceName(e.target.value)}
-                  placeholder="Customer List Lookalike (Jun 16, 2025)"
+                  placeholder={
+                    sourceType === "lookalike-audience"
+                      ? "Lookalike Audience (Jun 16, 2025)"
+                      : "Customer List Lookalike (Jun 16, 2025)"
+                  }
                   className="w-full"
                   maxLength={100}
                 />
                 <div className="flex justify-between text-sm text-gray-500 mt-2">
-                  <span>Choose a descriptive name</span>
+                  <span>
+                    Choose a descriptive name to help you identify this audience
+                    later
+                  </span>
                   <span>{audienceName.length}/100</span>
                 </div>
               </div>
 
-              {/* Upload Customer Data */}
-              <div>
-                <Label className="text-base font-semibold text-gray-900 mb-3 block">
-                  Upload Customer Data
-                </Label>
-                <p className="text-sm text-gray-600 mb-4">
-                  Upload a CSV file containing your customer data. Make sure it
-                  follows our format guidelines.
-                </p>
-
-                <FileUpload
-                  onFileUpload={setUploadedFile}
-                  uploadedFile={uploadedFile}
-                  onFileRemove={() => setUploadedFile(null)}
-                  templateType="customer-list"
+              {/* Audience Size Slider - Only for Lookalike Audience */}
+              {sourceType === "lookalike-audience" && (
+                <AudienceSizeSlider
+                  value={audienceSize}
+                  onValueChange={setAudienceSize}
                 />
-              </div>
+              )}
+
+              {/* Upload Customer Data - Only for Customer List */}
+              {sourceType === "customer-list" && (
+                <div>
+                  <Label className="text-base font-semibold text-gray-900 mb-3 block">
+                    Upload Customer Data
+                  </Label>
+                  <p className="text-sm text-gray-600 mb-4">
+                    Upload a CSV file containing your customer data. Make sure
+                    it follows our format guidelines.
+                  </p>
+
+                  <FileUpload
+                    onFileUpload={setUploadedFile}
+                    uploadedFile={uploadedFile}
+                    onFileRemove={() => setUploadedFile(null)}
+                    templateType="customer-list"
+                  />
+                </div>
+              )}
 
               {/* Form Errors */}
               {formErrors.length > 0 && (
@@ -407,7 +473,12 @@ export const ResponsiveCreateAudience = ({
                 </Button>
                 <Button
                   onClick={handleNext}
-                  disabled={!audienceName || !uploadedFile}
+                  disabled={
+                    !audienceName ||
+                    (sourceType === "customer-list" && !uploadedFile) ||
+                    (sourceType === "lookalike-audience" &&
+                      !selectedCustomerList)
+                  }
                   className="bg-brand-primary hover:bg-brand-600 text-white px-6 lg:px-8 py-2"
                 >
                   Continue
