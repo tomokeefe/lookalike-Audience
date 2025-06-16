@@ -180,7 +180,7 @@ export const ResponsiveCreateAudience = ({
       <div className="max-w-4xl mx-auto px-4 lg:px-6 py-4 lg:py-8">
         {/* Desktop Header */}
         <div className="hidden lg:block text-center mb-12">
-          <h1 className="mb-2">Create Lookalike Audience</h1>
+          <h1 className="mb-2">Create Customer List</h1>
           <p className="text-gray-600">
             Find new potential customers who are similar to your best customers
           </p>
