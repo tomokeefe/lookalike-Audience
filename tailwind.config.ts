@@ -20,6 +20,11 @@ export default {
     extend: {
       fontFamily: {
         sans: ["Open Sans", "system-ui", "sans-serif"],
+        heading: ["Visby CF", "Open Sans", "system-ui", "sans-serif"],
+      },
+      fontSize: {
+        h1: "38px",
+        h2: "24px",
       },
       colors: {
         brand: {
