@@ -1,8 +1,8 @@
 export const generateCSVTemplate = (type: "customer-list" | "lookalike") => {
-  const customerListTemplate = `MADID,Email,Hashed_Email,First_Name,Last_Name
-MAD12345678,john@example.com,5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5,John,Doe
-MAD87654321,jane@example.com,2e99758548972a8e8822ad47fa1017ff72f06f3ff6a016851f45c398732bc50c,Jane,Smith
-MAD11223344,bob@example.com,be178c0543eb17f5f3043021c9e5fcf30285e557a4fc309cce97ff9ca6182912,Bob,Johnson`;
+  const customerListTemplate = `MAIDS,Email,Hashed_Email,first_name,last_name,purchase_value,last_purchase_date
+MAD12345678,john@example.com,5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5,John,Doe,150.50,2024-01-15
+MAD87654321,jane@example.com,2e99758548972a8e8822ad47fa1017ff72f06f3ff6a016851f45c398732bc50c,Jane,Smith,89.99,2024-01-12
+MAD11223344,bob@example.com,be178c0543eb17f5f3043021c9e5fcf30285e557a4fc309cce97ff9ca6182912,Bob,Johnson,299.99,2024-01-10`;
 
   const lookalikeTemplate = `User_ID,Purchase_Value,Engagement_Score,Frequency,Recency
 USER001,150.50,8.5,12,7
@@ -46,7 +46,13 @@ export const validateCSVFile = (
         }
 
         const headers = lines[0].split(",").map((h) => h.trim());
-        const requiredHeaders = ["MADID", "Email"];
+        const requiredHeaders = [
+          "MAIDS",
+          "Email",
+          "Hashed_Email",
+          "first_name",
+          "last_name",
+        ];
         const missingHeaders = requiredHeaders.filter(
           (h) => !headers.includes(h),
         );
