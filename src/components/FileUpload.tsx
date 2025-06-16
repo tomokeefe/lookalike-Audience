@@ -16,6 +16,7 @@ import {
   downloadCSV,
   generateCSVTemplate,
 } from "@/utils/csvTemplates";
+import { FormatGuidelinesDialog } from "@/components/FormatGuidelinesDialog";
 
 interface FileUploadProps {
   onFileUpload: (file: File) => void;
@@ -159,7 +160,7 @@ export const FileUpload = ({
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-col sm:flex-row gap-4 mb-4">
+      <div className="flex flex-col sm:flex-row gap-3 mb-4">
         <Button
           variant="outline"
           onClick={handleDownloadTemplate}
@@ -168,13 +169,7 @@ export const FileUpload = ({
           <Download className="w-4 h-4" />
           Download Template
         </Button>
-        <div className="text-sm text-gray-600 flex items-center">
-          <span>Need help with format? Check the </span>
-          <span className="font-medium text-brand-primary ml-1">
-            Format Guidelines
-          </span>
-          <span className="ml-1">above ↗</span>
-        </div>
+        <FormatGuidelinesDialog />
       </div>
 
       <div

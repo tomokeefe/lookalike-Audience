@@ -352,12 +352,9 @@ export const ResponsiveCreateAudience = ({
 
               {/* Upload Customer Data */}
               <div>
-                <div className="flex items-center justify-between mb-3">
-                  <Label className="text-base font-semibold text-gray-900">
-                    Upload Customer Data
-                  </Label>
-                  <FormatGuidelinesDialog />
-                </div>
+                <Label className="text-base font-semibold text-gray-900 mb-3 block">
+                  Upload Customer Data
+                </Label>
                 <p className="text-sm text-gray-600 mb-4">
                   Upload a CSV file containing your customer data. Make sure it
                   follows our format guidelines.
