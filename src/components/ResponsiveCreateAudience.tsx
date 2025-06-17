@@ -374,23 +374,6 @@ export const ResponsiveCreateAudience = ({
                 </p>
               </div>
 
-              {/* Download Template and Format Guidelines - Only for Lookalike Audience */}
-              {sourceType === "lookalike-audience" && (
-                <div className="flex flex-col sm:flex-row gap-3 mb-6">
-                  <Button
-                    variant="outline"
-                    onClick={() => {
-                      /* Download template logic */
-                    }}
-                    className="flex items-center gap-2"
-                  >
-                    <Download className="w-4 h-4" />
-                    Download Template
-                  </Button>
-                  <FormatGuidelinesDialog />
-                </div>
-              )}
-
               {/* Select Source Customer List - Only for Lookalike Audience */}
               {sourceType === "lookalike-audience" && (
                 <div>
