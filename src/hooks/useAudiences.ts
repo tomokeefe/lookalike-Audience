@@ -141,19 +141,6 @@ export const useAudiences = () => {
     total: audiences.length,
   };
 
-  const forceUpdate = useCallback(() => {
-    const randomAudience =
-      audiences[Math.floor(Math.random() * audiences.length)];
-    if (randomAudience) {
-      updateAudience({
-        id: randomAudience.id,
-        reach:
-          (randomAudience.reach || 1000000) + Math.floor(Math.random() * 10000),
-      });
-      setLastUpdate(new Date());
-    }
-  }, [audiences, updateAudience]);
-
   return {
     audiences,
     loading,
@@ -163,9 +150,6 @@ export const useAudiences = () => {
     createAudience,
     updateAudienceStatus,
     updateAudience,
-    isConnected,
-    lastUpdate,
-    forceUpdate,
     refetch: () => {
       setAudiences([...mockAudiences]);
     },
