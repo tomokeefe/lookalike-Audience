@@ -190,6 +190,19 @@ export const ResponsiveCreateAudience = ({
       </div>
 
       <div className="max-w-4xl mx-auto px-4 lg:px-6 py-4 lg:py-8">
+        {/* Desktop Back Button */}
+        <div className="hidden lg:block mb-8">
+          <Button
+            variant="ghost"
+            onClick={() => navigate("/")}
+            size="sm"
+            className="flex items-center gap-2"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back
+          </Button>
+        </div>
+
         {/* Desktop Header */}
         <div className="hidden lg:block text-center mb-12">
           <h1 className="mb-2">
