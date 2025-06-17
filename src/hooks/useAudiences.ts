@@ -63,8 +63,6 @@ export const useAudiences = () => {
   const [audiences, setAudiences] = useState<Audience[]>(mockAudiences);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [isConnected, setIsConnected] = useState(true);
-  const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
 
   // Simple initialization - no complex loading
   useEffect(() => {
