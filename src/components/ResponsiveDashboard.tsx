@@ -106,12 +106,19 @@ export const ResponsiveDashboard = ({
                 <Eye className="mr-2 h-4 w-4" />
                 View Details
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Edit2 className="mr-2 h-4 w-4" />
-                Edit
-              </DropdownMenuItem>
+              <div className="px-3 py-2 text-sm font-medium text-gray-700 border-b border-t">
+                <div className="flex items-center">
+                  <Plus className="mr-2 h-4 w-4" />
+                  Add to Campaign
+                </div>
+              </div>
+              <DropdownMenuItem>Summer Promotion 2025</DropdownMenuItem>
+              <DropdownMenuItem>Holiday Season Campaign</DropdownMenuItem>
+              <DropdownMenuItem>Back to School 2025</DropdownMenuItem>
+              <DropdownMenuItem>New Product Launch</DropdownMenuItem>
+              <DropdownMenuItem>Seasonal Clearance</DropdownMenuItem>
               <DropdownMenuItem
-                className="text-red-600"
+                className="text-red-600 border-t"
                 onClick={() => onDeleteAudience(audience.id)}
               >
                 <Trash2 className="mr-2 h-4 w-4" />
