@@ -262,7 +262,13 @@ export const ResponsiveCreateAudience = ({
                 onValueChange={setSourceType}
                 className="space-y-3 lg:space-y-4"
               >
-                <Card className="border-2 border-gray-200 hover:border-brand-primary transition-colors cursor-pointer">
+                <Card
+                  className={`border-2 transition-colors cursor-pointer ${
+                    sourceType === "customer-list"
+                      ? "border-brand-primary"
+                      : "border-gray-200 hover:border-brand-primary"
+                  }`}
+                >
                   <CardContent className="p-4 lg:p-6">
                     <div className="flex items-center space-x-3">
                       <RadioGroupItem
@@ -294,7 +300,13 @@ export const ResponsiveCreateAudience = ({
                   </CardContent>
                 </Card>
 
-                <Card className="border-2 border-gray-200 hover:border-brand-primary transition-colors cursor-pointer">
+                <Card
+                  className={`border-2 transition-colors cursor-pointer ${
+                    sourceType === "lookalike-audience"
+                      ? "border-brand-primary"
+                      : "border-gray-200 hover:border-brand-primary"
+                  }`}
+                >
                   <CardContent className="p-4 lg:p-6">
                     <div className="flex items-center space-x-3">
                       <RadioGroupItem
