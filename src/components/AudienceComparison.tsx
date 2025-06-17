@@ -10,6 +10,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
   LineChart,
   Line,
   XAxis,
@@ -32,8 +38,12 @@ import {
   Calendar,
   Download,
   ArrowLeft,
+  FileText,
+  FileSpreadsheet,
 } from "lucide-react";
 import { Audience } from "@/hooks/useAudiences";
+import { downloadCSV, downloadPDF } from "@/utils/exportUtils";
+import { useToast } from "@/hooks/use-toast";
 
 interface ComparisonData {
   metric: string;
