@@ -32,7 +32,7 @@ export const AudienceSizeSlider = ({
             max={10}
             min={1}
             step={0.5}
-            className="w-full"
+            className="w-full [&_[data-orientation='horizontal']>.bg-primary]:bg-brand-primary [&_.border-primary]:border-brand-primary"
           />
 
           <div className="flex justify-between text-xs text-gray-500 mt-2">
