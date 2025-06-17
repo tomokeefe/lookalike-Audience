@@ -1,8 +1,4 @@
 import { useState, useEffect, useCallback } from "react";
-import {
-  useRealTimeUpdates,
-  useProcessingSimulation,
-} from "./useRealTimeUpdates";
 
 export interface Audience {
   id: number;
