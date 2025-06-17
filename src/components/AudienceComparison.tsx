@@ -401,11 +401,33 @@ export const AudienceComparison = ({
             <ArrowLeft className="w-4 h-4" />
             Back
           </Button>
-          <div>
-            <h1 className="mb-2">Audience Comparison</h1>
-            <p className="text-gray-600">
-              Compare performance metrics between two audiences
-            </p>
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+            <div>
+              <h1 className="mb-2">Audience Comparison</h1>
+              <p className="text-gray-600">
+                Compare performance metrics between two audiences
+              </p>
+            </div>
+            {audience1 && audience2 && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button className="bg-brand-primary hover:bg-brand-600 text-white flex items-center gap-2">
+                    <Download className="w-4 h-4" />
+                    Export Comparison
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={handleExportCSV}>
+                    <FileSpreadsheet className="mr-2 h-4 w-4" />
+                    Export as CSV
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleExportPDF}>
+                    <FileText className="mr-2 h-4 w-4" />
+                    Export as PDF
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
           </div>
         </div>
 
