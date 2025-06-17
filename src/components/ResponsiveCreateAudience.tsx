@@ -339,7 +339,7 @@ export const ResponsiveCreateAudience = ({
                               Lookalike Audience
                             </div>
                             <div className="text-gray-600 text-xs lg:text-sm">
-                              Use existing lookalike as seed
+                              Use a customer list as seed
                             </div>
                           </div>
                           <div className="text-xs lg:text-sm text-gray-500">
