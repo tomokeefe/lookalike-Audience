@@ -386,14 +386,38 @@ export const ResponsiveDashboard = ({
                             >
                               <Eye className="w-4 h-4" />
                             </Button>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="p-1 h-8 w-8 text-gray-500 hover:text-gray-700"
-                              title="Edit audience"
-                            >
-                              <Edit2 className="w-4 h-4" />
-                            </Button>
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="p-1 h-8 w-8 text-gray-500 hover:text-gray-700"
+                                  title="Add to Campaign"
+                                >
+                                  <Plus className="w-4 h-4" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                <div className="px-3 py-2 text-sm font-medium text-gray-700 border-b">
+                                  Add to Campaign
+                                </div>
+                                <DropdownMenuItem>
+                                  Summer Promotion 2025
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>
+                                  Holiday Season Campaign
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>
+                                  Back to School 2025
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>
+                                  New Product Launch
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>
+                                  Seasonal Clearance
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
                             <Button
                               variant="ghost"
                               size="sm"
