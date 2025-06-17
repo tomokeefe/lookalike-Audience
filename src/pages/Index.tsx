@@ -121,12 +121,6 @@ const Index = () => {
           deleteDialog.audienceId && handleDelete(deleteDialog.audienceId)
         }
       />
-
-      <NotificationSystem
-        isConnected={isConnected}
-        lastUpdate={lastUpdate}
-        processingCount={stats.processing}
-      />
     </>
   );
 };
