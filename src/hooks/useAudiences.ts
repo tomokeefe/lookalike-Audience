@@ -130,28 +130,6 @@ export const useAudiences = () => {
     [],
   );
 
-  // Simple real-time simulation without complex hooks
-  useEffect(() => {
-    const interval = setInterval(() => {
-      // Randomly update audience reach
-      if (Math.random() > 0.8) {
-        const randomAudience =
-          audiences[Math.floor(Math.random() * audiences.length)];
-        if (randomAudience) {
-          updateAudience({
-            id: randomAudience.id,
-            reach:
-              (randomAudience.reach || 1000000) +
-              Math.floor(Math.random() * 5000),
-          });
-          setLastUpdate(new Date());
-        }
-      }
-    }, 15000); // Update every 15 seconds
-
-    return () => clearInterval(interval);
-  }, [audiences, updateAudience]);
-
   // Calculate stats
   const stats = {
     totalReach: audiences.reduce(
