@@ -254,7 +254,7 @@ export const ResponsiveDashboard = ({
                   <Clock className="w-4 h-4 lg:w-5 lg:h-5 text-orange-600" />
                 </div>
                 <span className="text-gray-600 font-medium text-xs lg:text-sm">
-                  Processing
+                  <b>Processing</b>
                 </span>
               </div>
               <div className="text-lg lg:text-2xl font-bold text-gray-900">
