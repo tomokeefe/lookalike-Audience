@@ -6,7 +6,6 @@ import { DashboardSkeleton, EmptyState } from "@/components/LoadingStates";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { ResponsiveDashboard } from "@/components/ResponsiveDashboard";
 import { AudienceComparison } from "@/components/AudienceComparison";
-import { NotificationSystem } from "@/components/NotificationSystem";
 import { useToast } from "@/hooks/use-toast";
 import { exportAudienceData } from "@/utils/exportUtils";
 import { RefreshCw, BarChart3 } from "lucide-react";
