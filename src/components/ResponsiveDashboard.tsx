@@ -235,7 +235,7 @@ export const ResponsiveDashboard = ({
                   <Users className="w-4 h-4 lg:w-5 lg:h-5 text-blue-600" />
                 </div>
                 <span className="text-gray-600 font-medium text-xs lg:text-sm">
-                  Total Reach
+                  <b>Total Reach</b>
                 </span>
               </div>
               <div className="text-lg lg:text-2xl font-bold text-gray-900">
