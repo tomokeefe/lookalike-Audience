@@ -102,6 +102,7 @@ export const AudienceComparison = ({
 }: AudienceComparisonProps) => {
   const [selectedAudience1, setSelectedAudience1] = useState<string>("");
   const [selectedAudience2, setSelectedAudience2] = useState<string>("");
+  const { toast } = useToast();
 
   const audience1 = audiences.find(
     (a) => a.id.toString() === selectedAudience1,
@@ -119,6 +120,271 @@ export const AudienceComparison = ({
   const formatPercentage = (num: number) => {
     const sign = num > 0 ? "+" : "";
     return `${sign}${num.toFixed(1)}%`;
+  };
+
+  const generateComparisonCSV = () => {
+    if (!audience1 || !audience2) return "";
+
+    const headers = [
+      "Metric",
+      `${audience1.name}`,
+      `${audience2.name}`,
+      "Difference (%)",
+      "Trend",
+    ];
+
+    const csvData = [
+      headers.join(","),
+      ...mockComparisonData.map((data) =>
+        [
+          `"${data.metric}"`,
+          data.metric.includes("Rate") ||
+          data.metric.includes("Engagement") ||
+          data.metric.includes("Conversion")
+            ? `${data.audience1}%`
+            : formatNumber(data.audience1),
+          data.metric.includes("Rate") ||
+          data.metric.includes("Engagement") ||
+          data.metric.includes("Conversion")
+            ? `${data.audience2}%`
+            : formatNumber(data.audience2),
+          formatPercentage(data.difference),
+          data.trend,
+        ].join(","),
+      ),
+    ].join("\n");
+
+    return csvData;
+  };
+
+  const generateComparisonReport = () => {
+    if (!audience1 || !audience2) return "";
+
+    const reportDate = new Date().toLocaleDateString();
+
+    return `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Audience Comparison Report</title>
+        <style>
+          body {
+            font-family: 'Open Sans', Arial, sans-serif;
+            margin: 40px;
+            color: #374151;
+            line-height: 1.6;
+          }
+          .header {
+            border-bottom: 3px solid #00997B;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+          }
+          .title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #00997B;
+            margin: 0;
+          }
+          .subtitle {
+            color: #6B7280;
+            margin: 5px 0;
+          }
+          .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+          }
+          .audience-card {
+            background: #F9FAFB;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #00997B;
+          }
+          .audience-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 15px;
+          }
+          .metric-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+          }
+          .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+          }
+          .table th, .table td {
+            border: 1px solid #E5E7EB;
+            padding: 12px;
+            text-align: left;
+          }
+          .table th {
+            background: #F9FAFB;
+            font-weight: 600;
+          }
+          .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #111827;
+            margin: 30px 0 15px 0;
+          }
+          .positive { color: #059669; }
+          .negative { color: #DC2626; }
+          .neutral { color: #6B7280; }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <h1 class="title">Audience Comparison Report</h1>
+          <div class="subtitle">Comparing: ${audience1.name} vs ${audience2.name}</div>
+          <div class="subtitle">Generated on ${reportDate}</div>
+        </div>
+
+        <div class="comparison-grid">
+          <div class="audience-card">
+            <div class="audience-title">${audience1.name}</div>
+            <div class="metric-row">
+              <span>Source:</span>
+              <span>${audience1.source}</span>
+            </div>
+            <div class="metric-row">
+              <span>Size:</span>
+              <span>${audience1.size}</span>
+            </div>
+            <div class="metric-row">
+              <span>Status:</span>
+              <span>${audience1.status}</span>
+            </div>
+            <div class="metric-row">
+              <span>Created:</span>
+              <span>${audience1.created}</span>
+            </div>
+          </div>
+
+          <div class="audience-card">
+            <div class="audience-title">${audience2.name}</div>
+            <div class="metric-row">
+              <span>Source:</span>
+              <span>${audience2.source}</span>
+            </div>
+            <div class="metric-row">
+              <span>Size:</span>
+              <span>${audience2.size}</span>
+            </div>
+            <div class="metric-row">
+              <span>Status:</span>
+              <span>${audience2.status}</span>
+            </div>
+            <div class="metric-row">
+              <span>Created:</span>
+              <span>${audience2.created}</span>
+            </div>
+          </div>
+        </div>
+
+        <h2 class="section-title">Performance Comparison</h2>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Metric</th>
+              <th>${audience1.name}</th>
+              <th>${audience2.name}</th>
+              <th>Difference</th>
+              <th>Winner</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${mockComparisonData
+              .map(
+                (data) => `
+              <tr>
+                <td>${data.metric}</td>
+                <td>${data.metric.includes("Rate") || data.metric.includes("Engagement") || data.metric.includes("Conversion") ? `${data.audience1}%` : formatNumber(data.audience1)}</td>
+                <td>${data.metric.includes("Rate") || data.metric.includes("Engagement") || data.metric.includes("Conversion") ? `${data.audience2}%` : formatNumber(data.audience2)}</td>
+                <td class="${data.trend === "up" ? "positive" : data.trend === "down" ? "negative" : "neutral"}">${formatPercentage(data.difference)}</td>
+                <td>${data.difference > 0 ? audience1.name : data.difference < 0 ? audience2.name : "Tie"}</td>
+              </tr>
+            `,
+              )
+              .join("")}
+          </tbody>
+        </table>
+
+        <h2 class="section-title">Performance Timeline</h2>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Period</th>
+              <th>${audience1.name}</th>
+              <th>${audience2.name}</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${performanceComparison
+              .map(
+                (data) => `
+              <tr>
+                <td>${data.date}</td>
+                <td>${data.audience1}%</td>
+                <td>${data.audience2}%</td>
+              </tr>
+            `,
+              )
+              .join("")}
+          </tbody>
+        </table>
+
+        <div style="margin-top: 50px; padding-top: 20px; border-top: 1px solid #E5E7EB; font-size: 12px; color: #6B7280;">
+          <p>This comparison report was generated automatically by the Audience Management System.</p>
+          <p>For questions or support, please contact your system administrator.</p>
+        </div>
+      </body>
+      </html>
+    `;
+  };
+
+  const handleExportCSV = () => {
+    if (!audience1 || !audience2) {
+      toast({
+        title: "Cannot export",
+        description: "Please select two audiences to compare before exporting.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const csvContent = generateComparisonCSV();
+    const timestamp = new Date().toISOString().split("T")[0];
+    downloadCSV(csvContent, `audience-comparison-${timestamp}.csv`);
+
+    toast({
+      title: "Export successful",
+      description: "Comparison data has been downloaded as CSV.",
+    });
+  };
+
+  const handleExportPDF = async () => {
+    if (!audience1 || !audience2) {
+      toast({
+        title: "Cannot export",
+        description: "Please select two audiences to compare before exporting.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const htmlContent = generateComparisonReport();
+    const timestamp = new Date().toISOString().split("T")[0];
+    await downloadPDF(htmlContent, `audience-comparison-${timestamp}.pdf`);
+
+    toast({
+      title: "Export successful",
+      description: "Comparison report has been generated as PDF.",
+    });
   };
 
   return (
