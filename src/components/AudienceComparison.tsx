@@ -561,12 +561,8 @@ export const AudienceComparison = ({
           <div className="space-y-8">
             {/* Metrics Comparison */}
             <Card>
-              <CardHeader className="flex flex-row items-center justify-between">
+              <CardHeader>
                 <CardTitle>Key Metrics Comparison</CardTitle>
-                <Button variant="outline" size="sm">
-                  <Download className="w-4 h-4 mr-2" />
-                  Export
-                </Button>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
