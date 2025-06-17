@@ -18,16 +18,8 @@ const Index = () => {
   }>({ open: false });
   const [showComparison, setShowComparison] = useState(false);
   const navigate = useNavigate();
-  const {
-    audiences,
-    loading,
-    error,
-    stats,
-    deleteAudience,
-    refetch,
-    isConnected,
-    lastUpdate,
-  } = useAudienceContext();
+  const { audiences, loading, error, stats, deleteAudience, refetch } =
+    useAudienceContext();
   const { toast } = useToast();
 
   const handleDelete = async (id: number) => {
